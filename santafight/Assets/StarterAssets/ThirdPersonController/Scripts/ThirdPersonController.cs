@@ -111,7 +111,9 @@ namespace StarterAssets
 
         private bool _hasAnimator;
         private bool canMove = true;
-        private bool canAttack;
+
+
+        DamageCollider kickCollider;
 
         private bool IsCurrentDeviceMouse
         {
@@ -159,9 +161,9 @@ namespace StarterAssets
         {
             _hasAnimator = TryGetComponent(out _animator);
 
+            kickCollider = this._controller.GetComponentInChildren<DamageCollider>();
 
-
-            if (this._animator.GetCurrentAnimatorStateInfo(1).IsName("attack"))
+            if (this._animator.GetCurrentAnimatorStateInfo(0).IsName("attack"))
             {
                 canMove = false;
             }
@@ -172,19 +174,23 @@ namespace StarterAssets
 
 
 
+
+
             if (canMove)
             {
                 JumpAndGravity();
                 GroundedCheck();
                 Move();
             }
-            
+
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
-                //if(canAttack)
-                //{
-                    StartCoroutine(Attack());
-                //}
+                if (Grounded == true)
+                {
+                    Attack();
+                }
+                
+                
             }
         }
 
@@ -238,15 +244,24 @@ namespace StarterAssets
                 _cinemachineTargetYaw, 0.0f);
         }
 
-        private IEnumerator Attack()
+        private void Attack()
         {
-            
-            _animator.SetLayerWeight(_animator.GetLayerIndex("Attack Layer"), 1);
+           
+            //OpenDamageCollider();
+            //_animator.SetLayerWeight(_animator.GetLayerIndex("Attack Layer"), 1);
             _animator.SetTrigger("Attack");
+            //_animator.SetLayerWeight(_animator.GetLayerIndex("Attack Layer"), 0);
 
-            yield return new WaitForSeconds(0.9f);
-            _animator.SetLayerWeight(_animator.GetLayerIndex("Attack Layer"), 0);
+        }
 
+        public void OpenDamageCollider()
+        {
+            kickCollider.EnableDamageCollider();
+        }
+
+        public void CloseDamageCollider()
+        {
+            kickCollider.DisableDamageCollider();
         }
 
 
