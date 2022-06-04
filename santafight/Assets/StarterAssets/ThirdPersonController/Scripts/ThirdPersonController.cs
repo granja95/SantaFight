@@ -247,11 +247,11 @@ namespace StarterAssets
         private void Attack()
         {
            
-            //OpenDamageCollider();
+            OpenDamageCollider();
             //_animator.SetLayerWeight(_animator.GetLayerIndex("Attack Layer"), 1);
             _animator.SetTrigger("Attack");
             //_animator.SetLayerWeight(_animator.GetLayerIndex("Attack Layer"), 0);
-
+            
         }
 
         public void OpenDamageCollider()
