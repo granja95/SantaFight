@@ -170,7 +170,7 @@ namespace StarterAssets
             else
             {
                 canMove = true;
-                CloseDamageCollider();
+              
             }
 
 
@@ -190,6 +190,7 @@ namespace StarterAssets
                 {
                     Attack();
                     
+
                 }
             }
 
@@ -251,11 +252,16 @@ namespace StarterAssets
             OpenDamageCollider();
             //_animator.SetLayerWeight(_animator.GetLayerIndex("Attack Layer"), 1);
             _animator.SetTrigger("Attack");
+            StartCoroutine(Wait(3f));
+           
             //_animator.SetLayerWeight(_animator.GetLayerIndex("Attack Layer"), 0);
-            
 
+        }
 
-
+        IEnumerator Wait(float seconds)
+        {
+            yield return new WaitForSeconds(seconds);
+            CloseDamageCollider();
         }
 
         public void OpenDamageCollider()
