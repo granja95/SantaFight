@@ -170,6 +170,7 @@ namespace StarterAssets
             else
             {
                 canMove = true;
+                CloseDamageCollider();
             }
 
 
@@ -188,10 +189,10 @@ namespace StarterAssets
                 if (Grounded == true)
                 {
                     Attack();
+                    
                 }
-                
-                
             }
+
         }
 
         private void LateUpdate()
@@ -252,6 +253,9 @@ namespace StarterAssets
             _animator.SetTrigger("Attack");
             //_animator.SetLayerWeight(_animator.GetLayerIndex("Attack Layer"), 0);
             
+
+
+
         }
 
         public void OpenDamageCollider()
