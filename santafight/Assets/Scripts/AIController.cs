@@ -62,6 +62,7 @@ public class AIController : MonoBehaviour
         //if (!m_IsPatrol)
         //{
             Chasing();
+
         //}
         //else
         //{
@@ -79,7 +80,7 @@ public class AIController : MonoBehaviour
         {
             Move(speedRun);
             navMeshAgent.SetDestination(m_PlayerPosition);          //  set the destination of the enemy to the player location
-            anim.SetBool("chaise", true);
+            anim.SetBool("run", true);
         }
         if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)    //  Control if the enemy arrive to the player location
         {
@@ -96,8 +97,11 @@ public class AIController : MonoBehaviour
             else
             {
                 if (Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Player").transform.position) >= 2.5f)
+                {
                     //  Wait if the current position is not the player position
+                    anim.SetBool("run", false);
                     Stop();
+                }
                 m_WaitTime -= Time.deltaTime;
             }
         }
