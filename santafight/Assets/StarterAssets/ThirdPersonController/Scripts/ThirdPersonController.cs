@@ -252,7 +252,7 @@ namespace StarterAssets
             OpenDamageCollider();
             //_animator.SetLayerWeight(_animator.GetLayerIndex("Attack Layer"), 1);
             _animator.SetTrigger("Attack");
-            StartCoroutine(Wait(3f));
+            StartCoroutine(Wait(1f));
            
             //_animator.SetLayerWeight(_animator.GetLayerIndex("Attack Layer"), 0);
 

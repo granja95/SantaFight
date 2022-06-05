@@ -36,16 +36,23 @@ namespace StarterAssets
     {
         currentHealth = currentHealth - damage;
 
-        //healthbar.SetCurrentHealth(currentHealth);
+            //healthbar.SetCurrentHealth(currentHealth);
+        
 
-        _animator.SetTrigger("Damage");
+        //_animator.Play("hit 0");
+        //_animator.SetTrigger("Damage");
 
         if (currentHealth <= 0)
         {
             currentHealth = 0;
             _animator.SetTrigger("Die");
             //handle player death
-        }
+        }else
+            {
+                _animator.Play("hit 0");
+            }
+
+
 
     }
     }
