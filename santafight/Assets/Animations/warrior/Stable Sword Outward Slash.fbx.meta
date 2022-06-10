@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 2b42ffc2bef92aa4eaa204bdda1cf4d4
+guid: 25256aa7cb23bb74c93896a652921b5a
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable:
@@ -35,7 +35,7 @@ ModelImporter:
     second: Shield_LP|Run
   - first:
       74: -203655887218126122
-    second: mixamo.com
+    second: attack
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -83,7 +83,7 @@ ModelImporter:
       takeName: metarig|Attack_1
       internalID: 0
       firstFrame: 0
-      lastFrame: 25
+      lastFrame: 20
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -369,11 +369,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: mixamo.com
+      name: attack
       takeName: mixamo.com
       internalID: 0
       firstFrame: 0
-      lastFrame: 47
+      lastFrame: 123
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -382,8 +382,8 @@ ModelImporter:
       hasAdditiveReferencePose: 0
       loopTime: 1
       loopBlend: 0
-      loopBlendOrientation: 1
-      loopBlendPositionY: 1
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
       loopBlendPositionXZ: 0
       keepOriginalOrientation: 0
       keepOriginalPositionY: 1
