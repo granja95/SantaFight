@@ -64,22 +64,27 @@ namespace StarterAssets
 
         private void Update()
         {
-            
+
             health = enemyStats.currentHealth;
             EnviromentView();                       //  Check whether or not the player is in the enemy's field of vision
             
             if (health <= 0)
             {
+                m_CaughtPlayer = false;
                 Stop();
                 anim.SetBool("run", false);
                 anim.SetBool("attack", false);
                 anim.SetTrigger("Die");
             }
-            else if(!m_CaughtPlayer)
+            else if(!m_CaughtPlayer && health > 0)
             {
                 Chasing();
             }
-            else if (m_CaughtPlayer)
+            else if (Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Player").transform.position) >= 2.5f)
+            {
+                m_CaughtPlayer = false;
+            }
+            else if (m_CaughtPlayer && health > 0)
             {
                 Attack();
             }
@@ -88,6 +93,7 @@ namespace StarterAssets
 
         private void Chasing()
         {
+            m_CaughtPlayer = false;
             anim.SetBool("run", true);
             //  The enemy is chasing the player
             m_PlayerNear = false;                       //  Set false that hte player is near beacause the enemy already sees the player
@@ -106,6 +112,7 @@ namespace StarterAssets
                 if (m_WaitTime <= 0 && !m_CaughtPlayer && Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Player").transform.position) >= 6f)
                 {
                     //  Check if the enemy is not near to the player, returns to patrol after the wait time delay
+                    m_CaughtPlayer = false;
                     m_IsPatrol = true;
                     m_PlayerNear = false;
                     Move(speedWalk);
@@ -119,15 +126,15 @@ namespace StarterAssets
                     if (Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Player").transform.position) >= 2.5f)
                     {
                         //  Wait if the current position is not the player position
-
+                        
                         Stop();
                         m_WaitTime -= Time.deltaTime;
+
                     }
                     else
                     {
                         Stop();
                         m_CaughtPlayer = true;
-                        
                     }
 
                 }
@@ -138,8 +145,11 @@ namespace StarterAssets
         {
             anim.SetBool("attack", true);
             anim.Play("attack");
-            
+
+            //yield return new WaitForSeconds(1);
         }
+
+
 
 
         private void OnAnimatorMove()
@@ -156,6 +166,8 @@ namespace StarterAssets
         void Stop()
         {
             anim.SetBool("run", false);
+            anim.SetBool("attack", false);
+            
             navMeshAgent.isStopped = true;
             navMeshAgent.speed = 0;
             
@@ -166,6 +178,7 @@ namespace StarterAssets
         {
             navMeshAgent.isStopped = false;
             navMeshAgent.speed = speed;
+            m_CaughtPlayer = false;
         }
 
         void CaughtPlayer()
