@@ -14,9 +14,19 @@ namespace StarterAssets
 
         private Animator _animator;
 
+        public bool isAlive = true;
+
+        protected void Death()
+        {
+            isAlive = false;
+        }
+                
+
         private void Awake()
         {
+            
             _animator = GetComponentInChildren<Animator>();
+            
         }
 
         void Start()
@@ -24,6 +34,7 @@ namespace StarterAssets
             maxHealth = SetMaxHealthFromHealthLevel();
             currentHealth = maxHealth;
             healthbar.SetMaxHealth(maxHealth);
+            
         }
 
         private int SetMaxHealthFromHealthLevel()
@@ -34,17 +45,25 @@ namespace StarterAssets
 
         public void TakeDamage(int damage)
         {
+
             currentHealth = currentHealth - damage;
 
             healthbar.SetCurrentHealth(currentHealth);
 
-            _animator.SetTrigger("Damage");
 
-            if(currentHealth <= 0)
+            if (currentHealth > 0)
             {
+                _animator.SetTrigger("Damage");
+                
+            }
+            else
+            {
+                _animator.Play("die");
+                Death();
                 currentHealth = 0;
-                _animator.SetTrigger("Die");
-                //handle player death
+                //Destroy(gameObject, 1f);
+                GetComponent<ThirdPersonController>().enabled = false;
+                FindObjectOfType<GameManager>().EndGame();
             }
             
         }

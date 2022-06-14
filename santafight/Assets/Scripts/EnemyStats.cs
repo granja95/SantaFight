@@ -9,10 +9,11 @@ namespace StarterAssets
     public int healthLevel = 10;
     public int maxHealth;
     public int currentHealth;
+    public GameManager gameManager;
 
-    //public HealthBar healthbar;
+        //public HealthBar healthbar;
 
-    Animator _animator;
+        Animator _animator;
 
     private void Awake()
     {
@@ -45,9 +46,15 @@ namespace StarterAssets
         if (currentHealth <= 0)
         {
             currentHealth = 0;
-            _animator.SetTrigger("Die");
-            //handle player death
-        }else
+                gameManager.enemiesAlive--;
+                _animator.Play("death");
+                Destroy(gameObject, 10f);
+                Destroy(GetComponent<AIController>());
+                Destroy(GetComponent<EnemyStats>());
+                Destroy(GetComponent<CapsuleCollider>());
+                //handle player death
+            }
+            else
             {
                 _animator.Play("hit 0");
             }

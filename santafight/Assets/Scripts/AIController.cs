@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,7 +15,7 @@ namespace StarterAssets
         public float speedWalk = 6;                     //  Walking speed, speed in the nav mesh agent
         public float speedRun = 0;                      //  Running speed
 
-        public float viewRadius = 30;                   //  Radius of the enemy view
+        public float viewRadius = 100;                   //  Radius of the enemy view
         public float viewAngle = 360;                    //  Angle of the enemy view
         public LayerMask playerMask;                    //  To detect the player with the raycast
         public LayerMask obstacleMask;                  //  To detect the obstacules with the raycast
@@ -36,9 +37,13 @@ namespace StarterAssets
         bool m_IsPatrol;                                //  If the enemy is patrol, state of patroling
         bool m_CaughtPlayer;                            //  if the enemy has caught the player
         public EnemyStats enemyStats;
+        public PlayerStats playerStats;
         public int health;
+        public int playerhealth;
 
         private Animator anim;
+        DamageCollider kickCollider;
+        private bool isAlive;
 
         void Start()
         {
@@ -60,39 +65,63 @@ namespace StarterAssets
 
 
             anim = GetComponentInChildren<Animator>();
+            kickCollider = GetComponentInChildren<DamageCollider>();
+            isAlive = true;
+
+
+            //isAlive = playerStats.isAlive;
         }
 
         private void Update()
         {
-
-            health = enemyStats.currentHealth;
-            EnviromentView();                       //  Check whether or not the player is in the enemy's field of vision
             
-            if (health <= 0)
+            health = enemyStats.currentHealth;
+            
+            EnviromentView();                       //  Check whether or not the player is in the enemy's field of vision
+
+            if (health <= 0 && isAlive)
             {
                 m_CaughtPlayer = false;
                 Stop();
                 anim.SetBool("run", false);
                 anim.SetBool("attack", false);
-                anim.SetTrigger("Die");
+                isAlive = false;
+                //anim.SetTrigger("Die");
             }
             else if(!m_CaughtPlayer && health > 0)
             {
                 Chasing();
             }
-            else if (Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Player").transform.position) >= 2.5f)
+            else if (Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Player").transform.position) >= 1.0f)
             {
                 m_CaughtPlayer = false;
+                Chasing();
             }
             else if (m_CaughtPlayer && health > 0)
-            {
+            {   
                 Attack();
             }
 
         }
 
+        private int checkLife(int health)
+        {
+            try
+            {
+                int x; 
+                x = playerStats.currentHealth;
+
+                return x;
+            }
+            catch (NullReferenceException ex)
+            {
+                return 0;
+            }
+        }
+
         private void Chasing()
         {
+            CloseDamageCollider();
             m_CaughtPlayer = false;
             anim.SetBool("run", true);
             //  The enemy is chasing the player
@@ -133,7 +162,7 @@ namespace StarterAssets
                     }
                     else
                     {
-                        Stop();
+                        //Stop();
                         m_CaughtPlayer = true;
                     }
 
@@ -143,10 +172,27 @@ namespace StarterAssets
 
         private void Attack()
         {
+            OpenDamageCollider();
             anim.SetBool("attack", true);
             anim.Play("attack");
 
             //yield return new WaitForSeconds(1);
+        }
+
+        IEnumerator Wait(float seconds)
+        {
+            yield return new WaitForSeconds(seconds);
+            CloseDamageCollider();
+        }
+
+        public void OpenDamageCollider()
+        {
+            kickCollider.EnableDamageCollider();
+        }
+
+        public void CloseDamageCollider()
+        {
+            kickCollider.DisableDamageCollider();
         }
 
 
