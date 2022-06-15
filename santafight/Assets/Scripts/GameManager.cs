@@ -30,6 +30,7 @@ namespace StarterAssets
         private bool entrou = false;
 
         public int damageEnemy = 5;
+        public float speed = 2f;
     //public Animator blackScreenAnimator;
 
     // Start is called before the first frame update
@@ -49,7 +50,9 @@ namespace StarterAssets
                 //nextRoundUI.SetActive(true);
                 round++;
 
-                damageEnemy = damageEnemy + 1;
+                damageEnemy = damageEnemy + 2;
+                    speed = speed + speed * 0.2f;
+                    FindObjectOfType<AIController>().speedRun = speed;
                 FindObjectOfType<DamageCollider>().enemyDamage = damageEnemy;
                 //FindObjectOfType<PlayerStats>().currentHealth = 100;
                 //FindObjectOfType<PlayerStats>().healthbar.SetMaxHealth(FindObjectOfType<PlayerStats>().maxHealth);
@@ -62,6 +65,7 @@ namespace StarterAssets
                 NextWave(round);
                 roundNum.text = "Round: " + round.ToString();
             }
+            
 
         }
 
