@@ -34,6 +34,7 @@ namespace StarterAssets
         public int damageEnemy = 5;
         public float speed = 2f;
         public bool entrouRonda = false;
+        public bool emLoja = false;
         
     //public Animator blackScreenAnimator;
 
@@ -49,8 +50,8 @@ namespace StarterAssets
             
         if (enemiesAlive == 0 && entrouRonda == false)
         {
-                entrouRonda = true;
-            if (round >= 0 && round % 5 != 0)
+            entrouRonda = true;
+            if (round >= 0 /* && round % 10 != 0*/)
             {
                 //nextRoundUI.SetActive(true);
                 round++;
@@ -69,7 +70,16 @@ namespace StarterAssets
                 round++;
                 NextWave(round);
                 roundNum.text = "Round: " + round.ToString();
-            }            
+            }  //else if (round % 10 == 0)
+            //    {
+            //        shopMenu.SetActive(true);
+            //        emLoja = true;
+            //        while(emLoja)
+            //        {
+
+            //        }
+
+            //    }          
 
         }
 
