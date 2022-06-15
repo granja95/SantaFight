@@ -51,8 +51,8 @@ namespace StarterAssets
                 round++;
 
                 damageEnemy = damageEnemy + 2;
-                    speed = speed + speed * 0.2f;
-                    FindObjectOfType<AIController>().speedRun = speed;
+                speed = speed + speed * 0.1f;
+                
                 FindObjectOfType<DamageCollider>().enemyDamage = damageEnemy;
                 //FindObjectOfType<PlayerStats>().currentHealth = 100;
                 //FindObjectOfType<PlayerStats>().healthbar.SetMaxHealth(FindObjectOfType<PlayerStats>().maxHealth);
@@ -87,6 +87,7 @@ namespace StarterAssets
             enemySpawned.GetComponent<EnemyStats>().gameManager = GetComponent<GameManager>();
             enemiesAlive++;
         }
+        FindObjectOfType<AIController>().speedRun = speed;
         
     }
 
