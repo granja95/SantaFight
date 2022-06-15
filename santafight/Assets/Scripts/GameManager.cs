@@ -21,16 +21,20 @@ namespace StarterAssets
     public GameObject playerPrefab;
 
     public GameObject pauseMenu;
+    public GameObject shopMenu;
+
 
     public TextMeshProUGUI roundNum;
     //public TextMeshProUGUI roundsSurvived;
     public GameObject endScreen;
-        public GameObject nextRoundUI;
+    public GameObject nextRoundUI;
 
         private bool entrou = false;
 
         public int damageEnemy = 5;
         public float speed = 2f;
+        public bool entrouRonda = false;
+        
     //public Animator blackScreenAnimator;
 
     // Start is called before the first frame update
@@ -43,9 +47,10 @@ namespace StarterAssets
     void Update()
     {
             
-        if (enemiesAlive == 0 )
+        if (enemiesAlive == 0 && entrouRonda == false)
         {
-            if (round >= 0)
+                entrouRonda = true;
+            if (round >= 0 && round % 5 != 0)
             {
                 //nextRoundUI.SetActive(true);
                 round++;
@@ -64,8 +69,7 @@ namespace StarterAssets
                 round++;
                 NextWave(round);
                 roundNum.text = "Round: " + round.ToString();
-            }
-            
+            }            
 
         }
 
@@ -88,7 +92,9 @@ namespace StarterAssets
             enemiesAlive++;
         }
         FindObjectOfType<AIController>().speedRun = speed;
-        
+            entrouRonda = false;
+
+
     }
 
     IEnumerator ExampleCoroutine()
