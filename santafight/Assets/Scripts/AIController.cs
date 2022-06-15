@@ -39,7 +39,7 @@ namespace StarterAssets
         public EnemyStats enemyStats;
         public PlayerStats playerStats;
         public int health;
-        public int playerhealth;
+        //public int? playerhealth;
 
         private Animator anim;
         DamageCollider kickCollider;
@@ -66,6 +66,7 @@ namespace StarterAssets
 
             anim = GetComponentInChildren<Animator>();
             kickCollider = GetComponentInChildren<DamageCollider>();
+            
             isAlive = true;
 
 
@@ -74,11 +75,22 @@ namespace StarterAssets
 
         private void Update()
         {
-            
+
+            try
+            {
+                isAlive = FindObjectOfType<PlayerStats>().isAlive;
+            }
+            catch (NullReferenceException ex)
+            {
+                Destroy(gameObject);
+            }
             health = enemyStats.currentHealth;
             
             EnviromentView();                       //  Check whether or not the player is in the enemy's field of vision
-
+            //if (playerhealth <=0)
+            //{
+            //    Destroy(gameObject);
+            //}
             if (health <= 0 && isAlive)
             {
                 m_CaughtPlayer = false;
@@ -98,7 +110,7 @@ namespace StarterAssets
                 Chasing();
             }
             else if (m_CaughtPlayer && health > 0)
-            {   
+            {
                 Attack();
             }
 
@@ -183,6 +195,12 @@ namespace StarterAssets
         {
             yield return new WaitForSeconds(seconds);
             CloseDamageCollider();
+        }
+
+        IEnumerator DelayAttack(float seconds)
+        {
+            yield return new WaitForSeconds(seconds);
+            Attack();
         }
 
         public void OpenDamageCollider()

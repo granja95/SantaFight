@@ -14,7 +14,11 @@ namespace StarterAssets
 
         private Animator _animator;
 
+        public AudioClip tiago_scream;
+
         public bool isAlive = true;
+
+        public bool alreadyPlayed = false;
 
         protected void Death()
         {
@@ -43,6 +47,11 @@ namespace StarterAssets
             return maxHealth;
         }
 
+        public void alive()
+        {
+            gameObject.SetActive(true);
+        }
+
         public void TakeDamage(int damage)
         {
 
@@ -53,17 +62,25 @@ namespace StarterAssets
 
             if (currentHealth > 0)
             {
-                _animator.SetTrigger("Damage");
-                
+                _animator.Play("hit");
+                FindObjectOfType<AudioManager>().Play("Enemyhit");
+
             }
             else
             {
                 _animator.Play("die");
+                if (alreadyPlayed)
+                    return;
+                else
+                {
+                    GetComponent<AudioSource>().PlayOneShot(tiago_scream, 0.3f);
+                    alreadyPlayed = true;
+                }
                 Death();
                 currentHealth = 0;
-                //Destroy(gameObject, 1f);
                 GetComponent<ThirdPersonController>().enabled = false;
                 FindObjectOfType<GameManager>().EndGame();
+                
             }
             
         }

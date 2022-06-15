@@ -10,6 +10,9 @@ namespace StarterAssets
     public int maxHealth;
     public int currentHealth;
     public GameManager gameManager;
+    DamageCollider kickCollider;
+        public int vida;
+        public int damage;
 
         //public HealthBar healthbar;
 
@@ -24,8 +27,10 @@ namespace StarterAssets
     {
         maxHealth = SetMaxHealthFromHealthLevel();
         currentHealth = maxHealth;
-        //healthbar.SetMaxHealth(maxHealth);
-    }
+            kickCollider = this.GetComponentInChildren<DamageCollider>();
+            //healthbar.SetMaxHealth(maxHealth);
+            damage = 5;
+        }
 
     private int SetMaxHealthFromHealthLevel()
     {
@@ -33,7 +38,17 @@ namespace StarterAssets
         return maxHealth;
     }
 
-    public void TakeDamage(int damage)
+        public void OpenDamageCollider()
+        {
+            kickCollider.EnableDamageCollider();
+        }
+
+        public void CloseDamageCollider()
+        {
+            kickCollider.DisableDamageCollider();
+        }
+
+        public void TakeDamage(int damage)
     {
         currentHealth = currentHealth - damage;
 
@@ -45,9 +60,18 @@ namespace StarterAssets
 
         if (currentHealth <= 0)
         {
-            currentHealth = 0;
+                FindObjectOfType<AudioManager>().Play("Playerhit");
+                if(FindObjectOfType<PlayerStats>().currentHealth < 100 && FindObjectOfType<PlayerStats>().currentHealth > 0)
+                {
+                    vida = FindObjectOfType<PlayerStats>().currentHealth;
+                    vida = vida + 5;
+                    FindObjectOfType<PlayerStats>().currentHealth = vida;
+                    FindObjectOfType<PlayerStats>().healthbar.SetCurrentHealth(vida);
+                }
+                currentHealth = 0;
                 gameManager.enemiesAlive--;
                 _animator.Play("death");
+                CloseDamageCollider();
                 Destroy(gameObject, 10f);
                 Destroy(GetComponent<AIController>());
                 Destroy(GetComponent<EnemyStats>());

@@ -7,7 +7,8 @@ namespace StarterAssets
 public class DamageCollider : MonoBehaviour
 {
     Collider damageCollider;
-    public int  currentWeaponDamage = 25;
+    public int  currentWeaponDamage = 5;
+    public int enemyDamage = 1;
 
     private void Awake()
     {
@@ -17,7 +18,12 @@ public class DamageCollider : MonoBehaviour
         damageCollider.enabled = false;
     }
 
-    public void EnableDamageCollider()
+        private void Update()
+        {
+            enemyDamage = FindObjectOfType<GameManager>().damageEnemy;
+        }
+
+        public void EnableDamageCollider()
     {
         damageCollider.enabled = true;
     }
@@ -35,7 +41,7 @@ public class DamageCollider : MonoBehaviour
 
                 if (playerStats != null)
                 {
-                    playerStats.TakeDamage(currentWeaponDamage);
+                    playerStats.TakeDamage(enemyDamage);
                 }
             }
 

@@ -15,6 +15,8 @@ namespace StarterAssets
 
     public GameObject[] spawnPoints;
 
+    public GameObject spawnPointPlayer;
+
     public GameObject enemyPrefab;
     public GameObject playerPrefab;
 
@@ -26,12 +28,14 @@ namespace StarterAssets
         public GameObject nextRoundUI;
 
         private bool entrou = false;
+
+        public int damageEnemy = 5;
     //public Animator blackScreenAnimator;
 
     // Start is called before the first frame update
     void Start()
     {
-            
+            //gameObject.SetActive(true);
     }
 
     // Update is called once per frame
@@ -44,6 +48,11 @@ namespace StarterAssets
             {
                 //nextRoundUI.SetActive(true);
                 round++;
+
+                damageEnemy = damageEnemy + 1;
+                FindObjectOfType<DamageCollider>().enemyDamage = damageEnemy;
+                //FindObjectOfType<PlayerStats>().currentHealth = 100;
+                //FindObjectOfType<PlayerStats>().healthbar.SetMaxHealth(FindObjectOfType<PlayerStats>().maxHealth);
                 NextWave(round);
                 roundNum.text = "Round: " + round.ToString();
             }
@@ -58,14 +67,14 @@ namespace StarterAssets
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            //Pause();
+            Pause();
         }
     }
 
 
     public void NextWave(int round)
     {
-        
+        FindObjectOfType<AudioManager>().Play("Round");
         for (int i = 0; i < round; i++)
         {
             GameObject spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
@@ -90,7 +99,9 @@ namespace StarterAssets
             //Cursor.lockState = CursorLockMode.None;
             //endScreen.SetActive(true);
             Debug.Log("FIM");
-        Invoke("ReplayGame", 5f);
+            //FindObjectOfType<AudioManager>().Play("PlayerDeath");
+
+            Invoke("ReplayGame", 5f);
         //ReplayGame();
         //roundsSurvived.text = round.ToString();
     }
@@ -100,7 +111,10 @@ namespace StarterAssets
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         FindObjectOfType<ThirdPersonController>().enabled = true;
         FindObjectOfType<PlayerStats>().currentHealth = 100;
-        Time.timeScale = 1;
+        //GameObject playerSpawn = Instantiate(playerPrefab, spawnPointPlayer.transform.position, Quaternion.identity);
+        FindObjectOfType<PlayerStats>().alive();
+        FindObjectOfType<PlayerStats>().isAlive = true;
+         Time.timeScale = 1;
         round = 0;
     }
 
@@ -132,5 +146,10 @@ namespace StarterAssets
         Cursor.lockState = CursorLockMode.Locked;
         AudioListener.volume = 1;
     }
-}
+
+        public void Quit()
+        {
+            Application.Quit();
+        }
+    }
 }
